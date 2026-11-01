@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#080d18">
+<title>Sentinel AI — Security Operations</title>
+<style>
+:root{--bg:#080d18;--panel:#101827;--panel2:#131f31;--line:#23334a;--muted:#91a2b9;--text:#edf4ff;--cyan:#42d7e8;--blue:#648bff;--red:#ff647c;--amber:#ffbf5e;--green:#4bd6a0;--shadow:0 18px 50px #0005}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 80% -10%,#18314b 0,transparent 38%),var(--bg);color:var(--text);font:14px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif}
+button,input,select,textarea{font:inherit}button{cursor:pointer}.app{display:grid;grid-template-columns:248px 1fr;min-height:100vh}.sidebar{border-right:1px solid var(--line);padding:24px 16px;background:#0b1220dd;position:sticky;top:0;height:100vh}.brand{display:flex;align-items:center;gap:11px;padding:4px 10px 28px}.logo{height:38px;width:38px;border-radius:12px;background:linear-gradient(135deg,var(--cyan),#5574ff);display:grid;place-items:center;color:#07111e;font-size:20px;font-weight:900;box-shadow:0 8px 28px #42d7e833}.brand b{font-size:17px;letter-spacing:.4px}.brand small{display:block;color:var(--muted);font-size:10px;letter-spacing:2px}.nav-label{color:#65768f;font-size:10px;font-weight:800;letter-spacing:1.7px;padding:15px 12px 8px}.nav button{display:flex;gap:12px;align-items:center;width:100%;border:0;background:transparent;color:#aab9cc;padding:11px 13px;border-radius:10px;text-align:left;margin:3px 0}.nav button.active,.nav button:hover{background:#18263a;color:#fff}.nav button.active{box-shadow:inset 3px 0 var(--cyan)}.nav .ico{width:18px;text-align:center;color:var(--cyan)}.side-bottom{position:absolute;bottom:20px;left:16px;right:16px}.demo-card{border:1px solid #31546a;background:#102638;border-radius:12px;padding:13px}.demo-card b{color:var(--cyan);font-size:12px}.demo-card p{color:var(--muted);font-size:11px;margin:5px 0 0}
+main{min-width:0;padding:28px clamp(18px,3vw,42px) 48px;max-width:1700px;width:100%;margin:auto}.topbar{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:27px}.eyebrow{color:var(--cyan);font-size:10px;font-weight:800;letter-spacing:2px}.topbar h1{font-size:25px;margin:3px 0 0;letter-spacing:-.6px}.top-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.status{border:1px solid #245c51;color:var(--green);background:#102b29;padding:8px 11px;border-radius:30px;font-size:11px;font-weight:700}.status:before{content:"";display:inline-block;width:7px;height:7px;background:var(--green);border-radius:50%;margin-right:7px;box-shadow:0 0 10px var(--green)}.btn{border:1px solid var(--line);background:#172337;color:var(--text);padding:9px 13px;border-radius:9px;font-weight:650;font-size:12px}.btn:hover{border-color:var(--cyan)}.btn.primary{background:linear-gradient(110deg,#35c9d9,#648bff);color:#06111d;border:0}.btn.danger{border-color:#6b3542;color:#ff9aa9;background:#301b27}.btn.small{padding:6px 9px;font-size:11px}.notice{display:flex;gap:10px;align-items:flex-start;background:#172438;border:1px solid #2b4760;border-radius:11px;padding:12px 15px;color:#b9c9dc;font-size:12px;margin-bottom:20px}.notice strong{color:var(--cyan)}.grid{display:grid;gap:15px}.stats{grid-template-columns:repeat(4,minmax(0,1fr));margin-bottom:16px}.panel{background:linear-gradient(145deg,#121e30,#0e1726);border:1px solid var(--line);border-radius:15px;box-shadow:var(--shadow)}.stat{padding:17px 18px;position:relative;overflow:hidden}.stat:after{content:"";position:absolute;width:90px;height:90px;border-radius:50%;right:-30px;top:-40px;background:var(--glow,#42d7e8);opacity:.08;filter:blur(8px)}.stat-top{display:flex;justify-content:space-between;color:var(--muted);font-size:11px}.stat-icon{font-size:17px}.stat-value{font-size:29px;font-weight:800;letter-spacing:-1px;margin:10px 0 1px}.stat-foot{font-size:10px;color:var(--muted)}.green{color:var(--green)}.red{color:var(--red)}.amber{color:var(--amber)}.cyan{color:var(--cyan)}
+.main-grid{grid-template-columns:minmax(0,1.55fr) minmax(270px,.85fr);margin-bottom:16px}.panel-head{padding:17px 18px 12px;display:flex;justify-content:space-between;align-items:center;gap:10px}.panel-head h2{font-size:13px;margin:0}.panel-head p{font-size:10px;color:var(--muted);margin:3px 0 0}.panel-body{padding:0 18px 18px}.chart-wrap{height:205px;position:relative}.chart-wrap svg{width:100%;height:100%;overflow:visible}.chart-grid{stroke:#26374d;stroke-dasharray:3 5}.chart-label{fill:#8193aa;font-size:10px}.chart-line{fill:none;stroke:var(--cyan);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}.chart-area{fill:url(#area)}.legend{display:flex;gap:15px;color:var(--muted);font-size:10px;margin-top:7px}.legend i{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px;background:var(--cyan)}.legend span:nth-child(2) i{background:var(--red)}
+.score-wrap{display:flex;align-items:center;justify-content:center;padding:8px 0 15px}.score{width:148px;height:148px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--green) 0 84%,#26354a 84%);position:relative}.score:before{content:"";position:absolute;inset:9px;border-radius:50%;background:#111d2d}.score-inner{z-index:1;text-align:center}.score-inner strong{display:block;font-size:36px;line-height:1.1}.score-inner small{color:var(--muted);font-size:10px}.score-caption{text-align:center;color:var(--muted);font-size:11px}.score-list{display:grid;gap:9px;margin-top:15px}.score-row{display:flex;justify-content:space-between;color:#bdcadd;font-size:11px}.bar{height:5px;background:#26354a;border-radius:9px;margin-top:5px;overflow:hidden}.bar i{display:block;height:100%;border-radius:9px;background:linear-gradient(90deg,var(--cyan),var(--blue))}
+.bottom-grid{grid-template-columns:minmax(0,1.35fr) minmax(280px,.9fr)}.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;white-space:nowrap}th{text-align:left;color:#788ba4;font-size:9px;letter-spacing:1px;font-weight:800;padding:10px 12px;border-bottom:1px solid var(--line)}td{padding:12px;border-bottom:1px solid #1c2a3d;color:#c9d5e4;font-size:11px}tr:last-child td{border-bottom:0}.event-name{font-weight:700;color:#edf4ff}.sub{display:block;color:#8193aa;font-size:10px;margin-top:2px}.pill{display:inline-block;padding:4px 7px;border-radius:20px;font-size:9px;font-weight:800;letter-spacing:.4px}.pill.high{background:#401f2b;color:#ff8294}.pill.medium{background:#3b3020;color:#ffca75}.pill.low{background:#17382f;color:#6de0b1}.pill.info{background:#1b2e48;color:#91b9ff}.feed{display:grid;gap:0}.feed-item{display:flex;gap:11px;padding:12px 0;border-bottom:1px solid #1d2a3d}.feed-item:last-child{border:0}.feed-dot{width:8px;height:8px;border-radius:50%;margin-top:5px;flex:none;background:var(--amber)}.feed-item b{font-size:11px}.feed-item p{margin:3px 0 0;color:var(--muted);font-size:10px}.feed-item time{margin-left:auto;color:#70829a;font-size:9px;white-space:nowrap}
+.view{display:none}.view.active{display:block}.section-intro{margin:2px 0 19px}.section-intro h2{font-size:20px;margin:0}.section-intro p{color:var(--muted);font-size:12px;margin:4px 0}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.field{display:grid;gap:6px;margin-bottom:13px}.field label{color:#b9c8da;font-size:11px;font-weight:700}.field input,.field select,.field textarea{width:100%;background:#0b1422;border:1px solid #2a3a50;color:var(--text);border-radius:9px;padding:10px 11px;outline:none}.field textarea{min-height:100px;resize:vertical}.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--cyan)}.result{margin-top:15px;padding:15px;border:1px solid var(--line);background:#0c1625;border-radius:11px;display:none}.result.show{display:block}.result h3{margin:0 0 6px;font-size:14px}.result p{margin:4px 0;color:#b4c4d8;font-size:12px}.checkrow{display:flex;align-items:center;justify-content:space-between;padding:13px 0;border-bottom:1px solid #223147}.checkrow:last-child{border:0}.checkrow b{font-size:12px}.checkrow small{display:block;color:var(--muted);font-size:10px;margin-top:3px}.switch{appearance:none;width:38px;height:21px;border-radius:20px;background:#34445a;position:relative;cursor:pointer;transition:.2s}.switch:checked{background:#248d83}.switch:before{content:"";position:absolute;width:15px;height:15px;background:#fff;border-radius:50%;top:3px;left:3px;transition:.2s}.switch:checked:before{left:20px}
+.empty{text-align:center;color:var(--muted);padding:28px}.filterbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}.filterbar input,.filterbar select{background:#0b1422;border:1px solid var(--line);border-radius:8px;color:var(--text);padding:8px;font-size:11px}.toast{position:fixed;right:20px;bottom:20px;background:#16362f;border:1px solid #347a66;color:#c4ffea;padding:12px 16px;border-radius:10px;box-shadow:var(--shadow);font-size:12px;opacity:0;transform:translateY(10px);transition:.25s;pointer-events:none;z-index:9}.toast.show{opacity:1;transform:translateY(0)}.mobile-menu{display:none}
+@media(max-width:1000px){.app{grid-template-columns:205px 1fr}.stats{grid-template-columns:repeat(2,1fr)}.main-grid,.bottom-grid{grid-template-columns:1fr}}
+@media(max-width:680px){.app{display:block}.sidebar{position:fixed;z-index:8;left:-260px;width:245px;transition:.25s;box-shadow:var(--shadow)}.sidebar.open{left:0}.mobile-menu{display:inline-flex}.topbar{align-items:flex-start}.topbar h1{font-size:21px}.status{display:none}main{padding:20px 14px 35px}.stats{gap:9px}.stat{padding:13px}.stat-value{font-size:24px}.form-grid{grid-template-columns:1fr}.top-actions .btn{padding:8px}.notice{font-size:11px}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar" id="sidebar">
+ <div class="brand"><div class="logo">✦</div><div><b>SENTINEL AI</b><small>SECURITY OPERATIONS</small></div></div>
+ <div class="nav-label">WORKSPACE</div><nav class="nav">
+ <button class="active" data-view="overview"><span class="ico">◫</span> Overview</button>
+ <button data-view="scanner"><span class="ico">⌕</span> Threat Scanner</button>
+ <button data-view="alerts"><span class="ico">⚑</span> Alert Centre <span id="nav-alert-count" style="margin-left:auto;color:var(--red)">3</span></button>
+ <button data-view="activity"><span class="ico">◷</span> Event Activity</button>
+ <div class="nav-label">CONFIGURATION</div>
+ <button data-view="protection"><span class="ico">⬡</span> Protection Rules</button>
+ <button data-view="settings"><span class="ico">⚙</span> Settings</button>
+ </nav>
+ <div class="side-bottom"><div class="demo-card"><b>● DEMO ENVIRONMENT</b><p>Sample data only. No live network or endpoint monitoring is connected.</p></div></div>
+</aside>
+<main>
+<header class="topbar"><div style="display:flex;gap:12px;align-items:center"><button class="btn mobile-menu" id="menuBtn">☰</button><div><div class="eyebrow">THREAT INTELLIGENCE CONSOLE</div><h1 id="pageTitle">Security overview</h1></div></div><div class="top-actions"><span class="status">DEMO SYSTEM READY</span><button class="btn" id="exportBtn">↓ Export report</button><button class="btn primary" id="runDemoBtn">▶ Run demo scan</button></div></header>
+<div class="notice"><span>ⓘ</span><div><strong>Simulation mode active.</strong> Dashboard metrics and events are sample data or locally analyzed inputs. Sentinel is not connected to your network, devices, email, or external threat-intelligence feeds.</div></div>
+
+<section class="view active" id="view-overview">
+ <div class="grid stats">
+  <div class="panel stat" style="--glow:var(--cyan)"><div class="stat-top">Events analyzed <span class="stat-icon">⌁</span></div><div class="stat-value" id="stat-events">1,284</div><div class="stat-foot"><span class="cyan">Local demo</span> · session total</div></div>
+  <div class="panel stat" style="--glow:var(--red)"><div class="stat-top">Threats detected <span class="stat-icon">⚑</span></div><div class="stat-value red" id="stat-threats">18</div><div class="stat-foot">Rule-based demo detections</div></div>
+  <div class="panel stat" style="--glow:var(--amber)"><div class="stat-top">Open alerts <span class="stat-icon">◉</span></div><div class="stat-value amber" id="stat-open">3</div><div class="stat-foot">Require review</div></div>
+  <div class="panel stat" style="--glow:var(--green)"><div class="stat-top">Actions simulated <span class="stat-icon">⬡</span></div><div class="stat-value green" id="stat-actions">7</div><div class="stat-foot">No real systems changed</div></div>
+ </div>
+ <div class="grid main-grid">
+  <div class="panel"><div class="panel-head"><div><h2>Detection activity</h2><p>Illustrative event volume · last 7 intervals</p></div><span class="pill info">DEMO DATA</span></div><div class="panel-body"><div class="chart-wrap"><svg viewBox="0 0 650 205" preserveAspectRatio="none"><defs><linearGradient id="area" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#42d7e8" stop-opacity=".25"/><stop offset="1" stop-color="#42d7e8" stop-opacity="0"/></linearGradient></defs><path class="chart-grid" d="M35 25H635 M35 70H635 M35 115H635 M35 160H635"/><text class="chart-label" x="2" y="28">40</text><text class="chart-label" x="2" y="73">30</text><text class="chart-label" x="2" y="118">20</text><text class="chart-label" x="2" y="163">10</text><path class="chart-area" id="chartArea" d="M35 145 L130 110 L225 125 L320 65 L415 95 L510 42 L610 75 L610 180 L35 180Z"/><path class="chart-line" id="chartLine" d="M35 145 L130 110 L225 125 L320 65 L415 95 L510 42 L610 75"/><g class="chart-label"><text x="35" y="198">Mon</text><text x="130" y="198">Tue</text><text x="225" y="198">Wed</text><text x="320" y="198">Thu</text><text x="415" y="198">Fri</text><text x="510" y="198">Sat</text><text x="610" y="198">Sun</text></g></svg></div><div class="legend"><span><i></i>Events analyzed</span><span><i></i>Threat indicators</span></div></div></div>
+  <div class="panel"><div class="panel-head"><div><h2>Security posture</h2><p>Illustrative score from demo rules</p></div><span class="pill low">STABLE</span></div><div class="panel-body"><div class="score-wrap"><div class="score" id="scoreRing"><div class="score-inner"><strong id="scoreValue">84</strong><small>OUT OF 100</small></div></div></div><div class="score-caption">Demo posture estimate · not an audit</div><div class="score-list"><div><div class="score-row"><span>Identity signals</span><b>92%</b></div><div class="bar"><i style="width:92%"></i></div></div><div><div class="score-row"><span>Endpoint signals</span><b>78%</b></div><div class="bar"><i style="width:78%"></i></div></div><div><div class="score-row"><span>Access signals</span><b>86%</b></div><div class="bar"><i style="width:86%"></i></div></div></div></div></div>
+ </div>
+ <div class="grid bottom-grid">
+  <div class="panel"><div class="panel-head"><div><h2>Recent security alerts</h2><p>Latest locally recorded detections</p></div><button class="btn small" data-goto="alerts">View all →</button></div><div class="table-wrap"><table><thead><tr><th>DETECTION</th><th>SEVERITY</th><th>SOURCE</th><th>STATUS</th></tr></thead><tbody id="recentAlerts"></tbody></table></div></div>
+  <div class="panel"><div class="panel-head"><div><h2>Activity stream</h2><p>Recent demo events</p></div><span class="pill info">LIVE UI</span></div><div class="panel-body"><div class="feed" id="activityFeed"></div></div></div>
+ </div>
+</section>
+
+<section class="view" id="view-scanner">
+ <div class="section-intro"><h2>Threat scanner</h2><p>Analyze a URL, message, or structured event with transparent local heuristics.</p></div>
+ <div class="grid main-grid">
+  <div class="panel"><div class="panel-head"><div><h2>Submit for analysis</h2><p>No content is sent to a server. Analysis runs in this browser.</p></div><span class="pill info">LOCAL RULES</span></div><div class="panel-body">
+   <div class="field"><label>Analysis type</label><select id="scanType"><option value="url">URL / website</option><option value="message">Email or message text</option><option value="event">Security event (JSON)</option></select></div>
+   <div class="field"><label>Input to analyze</label><textarea id="scanInput" placeholder="Paste a URL, suspicious message, or event details…"></textarea></div>
+   <button class="btn primary" id="analyzeBtn">⌕ Analyze input</button>
+   <div class="result" id="scanResult" aria-live="polite"></div>
+  </div></div>
+  <div class="panel"><div class="panel-head"><div><h2>What is checked?</h2><p>Heuristic indicators, not definitive verdicts</p></div></div><div class="panel-body">
+   <div class="feed-item"><span class="feed-dot" style="background:var(--red)"></span><div><b>URL risk signals</b><p>IP-based hosts, deceptive patterns, URL shorteners, unusual characters and risky keywords.</p></div></div>
+   <div class="feed-item"><span class="feed-dot" style="background:var(--amber)"></span><div><b>Social engineering language</b><p>Urgency, credential requests, payment pressure and suspicious link prompts.</p></div></div>
+   <div class="feed-item"><span class="feed-dot" style="background:var(--blue)"></span><div><b>Event anomalies</b><p>Unusual login time, repeated failures, unfamiliar location and privilege changes when present in input.</p></div></div>
+   <p style="font-size:10px;color:var(--muted);margin-top:15px">This scanner does not download files, execute code, visit submitted URLs, or query reputation databases.</p>
+  </div></div>
+ </div>
+</section>
+
+<section class="view" id="view-alerts">
+ <div class="section-intro"><h2>Alert centre</h2><p>Review, acknowledge, resolve, or simulate a protective response.</p></div>
+ <div class="panel"><div class="panel-head"><div><h2>Detection queue</h2><p id="alertSummary">Open alerts and resolved findings</p></div><button class="btn small" id="addSampleBtn">＋ Add sample alert</button></div><div class="panel-body"><div class="filterbar"><input id="alertSearch" placeholder="Search alerts…"><select id="severityFilter"><option value="all">All severities</option><option value="high">High</option><option value="medium">Medium</option><option value="low">Low</option></select><select id="statusFilter"><option value="all">All statuses</option><option value="Open">Open</option><option value="Investigating">Investigating</option><option value="Resolved">Resolved</option></select></div><div class="table-wrap"><table><thead><tr><th>ALERT</th><th>SEVERITY</th><th>TIME</th><th>STATUS</th><th>ACTIONS</th></tr></thead><tbody id="allAlerts"></tbody></table></div></div></div>
+</section>
+
+<section class="view" id="view-activity">
+ <div class="section-intro"><h2>Event activity</h2><p>Local event ledger containing sample events and submitted analyses.</p></div>
+ <div class="panel"><div class="panel-head"><div><h2>Event ledger</h2><p>Stored in this browser only</p></div><button class="btn small" id="clearEventsBtn">Clear local events</button></div><div class="panel-body"><div class="filterbar"><input id="eventSearch" placeholder="Search event type, source, details…"></div><div class="table-wrap"><table><thead><tr><th>TIME</th><th>EVENT</th><th>SOURCE</th><th>RESULT</th><th>DETAILS</th></tr></thead><tbody id="eventRows"></tbody></table></div></div></div>
+</section>
+
+<section class="view" id="view-protection">
+ <div class="section-intro"><h2>Protection rules</h2><p>Configure what Sentinel would recommend or simulate when a rule matches.</p></div>
+ <div class="grid main-grid"><div class="panel"><div class="panel-head"><div><h2>Detection and response policies</h2><p>Changes are saved locally in this browser</p></div><span class="pill info">SIMULATED</span></div><div class="panel-body" id="ruleList"></div></div>
+ <div class="panel"><div class="panel-head"><div><h2>Response guardrails</h2></div></div><div class="panel-body"><div class="notice" style="margin:0 0 12px">Protective actions here are demonstrations only. They do not block traffic, terminate sessions, or modify devices.</div><div class="checkrow"><div><b>Require confirmation</b><small>Ask before simulating any response</small></div><input class="switch" id="confirmAction" type="checkbox" checked></div><div class="checkrow"><div><b>Record response history</b><small>Keep simulated actions in event ledger</small></div><input class="switch" id="recordActions" type="checkbox" checked></div><button class="btn primary" id="saveGuardrails" style="margin-top:15px">Save guardrails</button></div></div></div>
+</section>
+
+<section class="view" id="view-settings">
+ <div class="section-intro"><h2>Settings</h2><p>Manage local demo data and interface preferences.</p></div>
+ <div class="grid main-grid"><div class="panel"><div class="panel-head"><div><h2>Detection preferences</h2><p>Adjust the local heuristic sensitivity</p></div></div><div class="panel-body">
+ <div class="field"><label>Detection sensitivity</label><select id="sensitivity"><option value="low">Low — fewer flags</option><option value="balanced" selected>Balanced — recommended for demo</option><option value="high">High — more heuristic flags</option></select></div>
+ <div class="field"><label>Workspace label</label><input id="workspaceName" value="My Security Workspace" maxlength="50"></div>
+ <button class="btn primary" id="saveSettings">Save preferences</button></div></div>
+ <div class="panel"><div class="panel-head"><div><h2>Data and privacy</h2></div></div><div class="panel-body"><p style="font-size:11px;color:var(--muted)">Sentinel stores demo events, alert statuses, and preferences in browser localStorage. No account, backend, or cloud sync is configured.</p><button class="btn danger" id="resetDemo">Reset all demo data</button><p style="font-size:10px;color:var(--muted);margin-top:12px">Reset removes this app's local demo records and restores the sample dashboard.</p></div></div></div>
+</section>
+<footer style="margin-top:25px;color:#62748d;font-size:10px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><span>Sentinel AI · Prototype security operations console</span><span>Local demo build · No live integrations</span></footer>
+</main></div><div class="toast" id="toast"></div>
+<script>
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const now=()=>new Date().toLocaleString();
+const initialAlerts=[
+{id:1,name:"Repeated failed login attempts",detail:"12 failed sign-in attempts within 3 minutes",severity:"high",source:"auth-gateway.demo",status:"Open",time:"2 min ago",type:"Brute-force pattern"},
+{id:2,name:"Potential phishing message",detail:"Urgent credential verification link detected",severity:"high",source:"mail-sample.demo",status:"Open",time:"8 min ago",type:"Phishing heuristic"},
+{id:3,name:"Unusual sign-in context",detail:"New country and unfamiliar device in sample event",severity:"medium",source:"identity.demo",status:"Investigating",time:"19 min ago",type:"Login anomaly"},
+{id:4,name:"Unexpected privilege change",detail:"User role changed from viewer to administrator",severity:"medium",source:"access-control.demo",status:"Resolved",time:"1 hr ago",type:"Access anomaly"},
+{id:5,name:"Suspicious executable indicator",detail:"Sample event references an untrusted executable name",severity:"low",source:"endpoint.demo",status:"Resolved",time:"3 hr ago",type:"Malware indicator"}
+];
+const initialEvents=[
+{time:"10:42:18",event:"Authentication anomaly",source:"auth-gateway.demo",result:"Flagged",details:"12 failed login attempts"},
+{time:"10:39:02",event:"Message inspection",source:"mail-sample.demo",result:"Flagged",details:"Urgent credential request and link"},
+{time:"10:31:45",event:"Identity event",source:"identity.demo",result:"Flagged",details:"Unfamiliar device / country"},
+{time:"10:28:11",event:"Access control",source:"access-control.demo",result:"Reviewed",details:"Privilege change sample"},
+{time:"10:20:00",event:"System heartbeat",source:"demo-simulator",result:"Normal",details:"Simulation environment ready"}
+];
+const defaults={alerts:initialAlerts,events:initialEvents,actions:7,eventCount:1284,threatCount:18,rules:{phishing:true,login:true,malware:true,access:true,autoBlock:false,notify:true},sensitivity:"balanced",workspace:"My Security Workspace",confirm:true,record:true};
+let state;
+try{state={...defaults,...JSON.parse(localStorage.getItem("sentinelDemo")||"{}")};state.rules={...defaults.rules,...(state.rules||{})}}catch{state=structuredClone(defaults)}
+function save(){localStorage.setItem("sentinelDemo",JSON.stringify(state))}
+function toast(msg){let t=$("#toast");t.textContent=msg;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2500)}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function severity(s){return `<span class="pill ${s}">${s.toUpperCase()}</span>`}
+function render(){
+ $("#stat-events").textContent=state.eventCount.toLocaleString();$("#stat-threats").textContent=state.threatCount;$("#stat-open").textContent=state.alerts.filter(a=>a.status!=="Resolved").length;$("#stat-actions").textContent=state.actions;
+ $("#nav-alert-count").textContent=state.alerts.filter(a=>a.status!=="Resolved").length;
+ const recent=[...state.alerts].slice(0,4);
+ $("#recentAlerts").innerHTML=recent.map(a=>`<tr><td><span class="event-name">${esc(a.name)}</span><span class="sub">${esc(a.time)}</span></td><td>${severity(a.severity)}</td><td>${esc(a.source)}</td><td>${esc(a.status)}</td></tr>`).join("");
+ $("#activityFeed").innerHTML=state.events.slice(0,4).map(e=>`<div class="feed-item"><span class="feed-dot" style="background:${e.result==="Flagged"?"var(--red)":e.result==="Normal"?"var(--green)":"var(--amber)"}"></span><div><b>${esc(e.event)}</b><p>${esc(e.details)}</p></div><time>${esc(e.time)}</time></div>`).join("")||'<div class="empty">No local events yet</div>';
+ renderAlerts();renderEvents();renderRules();save();
+}
+function renderAlerts(){
+ let q=($("#alertSearch")?.value||"").toLowerCase(),sev=$("#severityFilter")?.value||"all",st=$("#statusFilter")?.value||"all";
+ let rows=state.alerts.filter(a=>(a.name+" "+a.detail+" "+a.source).toLowerCase().includes(q)&&(sev==="all"||a.severity===sev)&&(st==="all"||a.status===st));
+ $("#allAlerts").innerHTML=rows.map(a=>`<tr><td><span class="event-name">${esc(a.name)}</span><span class="sub">${esc(a.detail)}</span></td><td>${severity(a.severity)}</td><td>${esc(a.time)}</td><td>${esc(a.status)}</td><td><button class="btn small" onclick="changeStatus(${a.id})">${a.status==="Resolved"?"Reopen":"Resolve"}</button> <button class="btn small" onclick="simulateResponse(${a.id})">Respond</button></td></tr>`).join("")||'<tr><td colspan="5" class="empty">No alerts match these filters.</td></tr>';
+ $("#alertSummary").textContent=`${state.alerts.filter(a=>a.status!=="Resolved").length} open · ${state.alerts.length} total findings`;
+}
+function renderEvents(){
+ let q=($("#eventSearch")?.value||"").toLowerCase();
+ let rows=state.events.filter(e=>(e.event+" "+e.source+" "+e.details+" "+e.result).toLowerCase().includes(q));
+ $("#eventRows").innerHTML=rows.map(e=>`<tr><td>${esc(e.time)}</td><td class="event-name">${esc(e.event)}</td><td>${esc(e.source)}</td><td>${severity(e.result==="Flagged"?"high":e.result==="Normal"?"low":"info")}</td><td>${esc(e.details)}</td></tr>`).join("")||'<tr><td colspan="5" class="empty">No events found.</td></tr>';
+}
+function renderRules(){
+ let names=[["phishing","Phishing-language detection","Flag urgency, credential requests and suspicious link prompts."],["login","Suspicious login detection","Flag repeated failures, unfamiliar devices and unusual locations."],["malware","Malware indicator detection","Flag suspicious executable names and malware-related event indicators."],["access","Unauthorized access detection","Flag privilege escalation and unexpected access changes."],["autoBlock","Simulate automatic blocking","When enabled, matching high-risk demo alerts can trigger a simulated block."],["notify","Show alert notifications","Display an in-app notification when a detection is added."]];
+ $("#ruleList").innerHTML=names.map(([k,n,d])=>`<div class="checkrow"><div><b>${n}</b><small>${d}</small></div><input class="switch rule-toggle" type="checkbox" data-rule="${k}" ${state.rules[k]?"checked":""}></div>`).join("");
+ $$(".rule-toggle").forEach(el=>el.addEventListener("change",()=>{state.rules[el.dataset.rule]=el.checked;save();toast("Detection rule updated")}));
+}
+function addEvent(event,result,details,source="local-scanner"){state.events.unshift({time:new Date().toLocaleTimeString(),event,source,result,details});state.eventCount++;if(result==="Flagged")state.threatCount++;render()}
+function addAlert(name,detail,severityLevel,source,type="Heuristic detection"){
+ let a={id:Date.now()+Math.floor(Math.random()*999),name,detail,severity:severityLevel,source,status:"Open",time:"Just now",type};state.alerts.unshift(a);addEvent(type,"Flagged",detail,source);
+ if(state.rules.autoBlock&&severityLevel==="high")simulateResponse(a.id,true);
+ if(state.rules.notify)toast("New "+severityLevel+" alert detected");render();return a;
+}
+function changeStatus(id){let a=state.alerts.find(x=>x.id===id);if(!a)return;a.status=a.status==="Resolved"?"Open":"Resolved";addEvent("Alert status updated","Reviewed",`${a.name}: ${a.status}`,"alert-centre");render();toast("Alert status updated")}
+function simulateResponse(id,automatic=false){
+ let a=state.alerts.find(x=>x.id===id);if(!a)return;
+ if(state.confirm&&!automatic&&!confirm("Simulate a protective response for this demo alert? No real device, account, or network will be changed."))return;
+ state.actions++;addEvent("Simulated response","Reviewed",`Would recommend response for: ${a.name}`,"response-engine.demo");
+ toast("Demo response recorded — no real system changed");render();
+}
+function runDemo(){
+ const samples=[
+ ()=>addAlert("Credential-harvesting link pattern","Message contains an urgent password reset prompt and deceptive link wording","high","demo-mail-04","Phishing heuristic"),
+ ()=>addAlert("Repeated authentication failures","15 failed attempts from one sample source in a short window","high","demo-auth-12","Login anomaly"),
+ ()=>addAlert("Unusual access elevation","Sample user received administrator privileges unexpectedly","medium","demo-iam-02","Access anomaly"),
+ ()=>addAlert("Suspicious file indicator","Event contains a known test string used to represent malware indicators","medium","demo-endpoint-07","Malware indicator")
+ ];
+ samples[Math.floor(Math.random()*samples.length)]();toast("Demo scan complete");
+}
+function analyze(){
+ let type=$("#scanType").value,raw=$("#scanInput").value.trim(),findings=[];
+ if(!raw){toast("Enter something to analyze first");return}
+ const low=raw.toLowerCase();
+ const sens=state.sensitivity;
+ if(type==="url"){
+  try{
+   let u=new URL(raw.includes("://")?raw:"https://"+raw),host=u.hostname;
+   if(/^\d{1,3}(\.\d{1,3}){3}$/.test(host))findings.push(["IP address used as host","medium"]);
+   if(host.includes("xn--"))findings.push(["Internationalized domain / homograph review needed","medium"]);
+   if(["bit.ly","tinyurl.com","t.co","ow.ly","rb.gy"].includes(host))findings.push(["URL shortener obscures final destination","medium"]);
+   if((host.match(/-/g)||[]).length>=3)findings.push(["Unusually many hyphens in hostname","low"]);
+   if((u.href.match(/@/g)||[]).length)findings.push(["At-sign in URL may obscure destination","high"]);
+   if(/login|verify|secure|account|update|wallet|password/.test(u.href))findings.push(["Credential or account-related keyword in URL","low"]);
+   if(u.protocol!=="https:")findings.push(["URL does not use HTTPS","low"]);
+  }catch{findings.push(["Input is not a valid URL","low"])}
+ }else if(type==="message"){
+  if(/urgent|immediately|within 24 hours|suspended|act now|final warning/.test(low))findings.push(["Urgency or pressure language","medium"]);
+  if(/password|login|credentials|verify your account|one.time password|otp/.test(low))findings.push(["Credential or authentication request","high"]);
+  if(/gift card|wire transfer|crypto|payment required|bank details/.test(low))findings.push(["Payment or financial request","medium"]);
+  if(/https?:\/\/|www\./.test(low))findings.push(["Contains a web link — destination should be independently verified","low"]);
+  if(/attachment|open the file|enable macros/.test(low))findings.push(["Attachment or active-content prompt","medium"]);
+ }else{
+  try{
+   let obj=JSON.parse(raw),txt=JSON.stringify(obj).toLowerCase();
+   if((obj.failed_attempts||obj.failedAttempts||0)>=5||/brute.force|multiple failed|repeated failures/.test(txt))findings.push(["Repeated authentication failure pattern","high"]);
+   if(/new_country|unfamiliar_device|impossible_travel|unknown_device/.test(txt))findings.push(["Unusual sign-in context indicator","medium"]);
+   if(/privilege_escalation|admin_granted|unauthorized|access_denied/.test(txt))findings.push(["Potential unauthorized access / privilege change","high"]);
+   if(/malware|trojan|ransomware|suspicious_executable/.test(txt))findings.push(["Malware-related indicator in event data","high"]);
+   if(!findings.length)findings.push(["No configured event pattern matched","low"]);
+  }catch{findings.push(["Invalid JSON. Provide a structured JSON security event.","low"])}
+ }
+ if(sens==="high"&&findings.length===0)findings.push(["No exact match; manual review still recommended","low"]);
+ if(sens==="low")findings=findings.filter(f=>f[1]==="high");
+ const risk=findings.some(f=>f[1]==="high")?"high":findings.some(f=>f[1]==="medium")?"medium":"low";
+ const result=$("#scanResult");result.classList.add("show");
+ result.innerHTML=`<h3>Analysis result: <span class="${risk==="high"?"red":risk==="medium"?"amber":"green"}">${risk.toUpperCase()} INDICATOR LEVEL</span></h3><p>${findings.length} heuristic indicator(s) found. This is not a verified maliciousness verdict.</p>${findings.map(f=>`<p>• ${esc(f[0])} ${severity(f[1])}</p>`).join("")}<p style="margin-top:10px;color:var(--muted);font-size:10px">Analysis is local and heuristic. The submitted URL was not opened and no file was executed.</p><button class="btn small" id="makeAlert" style="margin-top:9px">＋ Save as alert</button>`;
+ $("#makeAlert").onclick=()=>{addAlert(type==="url"?"URL risk indicators":type==="message"?"Potential phishing message":"Security event anomaly",findings.map(f=>f[0]).join("; "),risk,"local-scanner",type+" analysis");toast("Finding saved to alert centre")};
+ addEvent("Input analyzed","Reviewed",`${type} analysis: ${findings.length} indicator(s)`,"local-scanner");
+}
+function exportReport(){
+ const data={product:"Sentinel AI prototype",mode:"DEMO / LOCAL HEURISTICS ONLY",generatedAt:new Date().toISOString(),disclaimer:"No live monitoring, external reputation checks, or real protective actions are connected.",alerts:state.alerts,events:state.events,settings:{sensitivity:state.sensitivity,rules:state.rules}};
+ const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="sentinel-demo-report.json";a.click();URL.revokeObjectURL(url);toast("Report exported");
+}
+function showView(name){
+ $$(".view").forEach(v=>v.classList.toggle("active",v.id==="view-"+name));$$(".nav button[data-view]").forEach(b=>b.classList.toggle("active",b.dataset.view===name));
+ const titles={overview:"Security overview",scanner:"Threat scanner",alerts:"Alert centre",activity:"Event activity",protection:"Protection rules",settings:"Settings"};$("#pageTitle").textContent=titles[name]||"Sentinel AI";$("#sidebar").classList.remove("open");render();
+}
+$$(".nav button[data-view]").forEach(b=>b.addEventListener("click",()=>showView(b.dataset.view)));
+$$("[data-goto]").forEach(b=>b.addEventListener("click",()=>showView(b.dataset.goto)));
+$("#menuBtn").onclick=()=>$("#sidebar").classList.toggle("open");
+$("#runDemoBtn").onclick=runDemo;$("#analyzeBtn").onclick=analyze;$("#exportBtn").onclick=exportReport;
+$("#alertSearch").addEventListener("input",renderAlerts);$("#severityFilter").onchange=renderAlerts;$("#statusFilter").onchange=renderAlerts;$("#eventSearch").addEventListener("input",renderEvents);
+$("#addSampleBtn").onclick=runDemo;
+$("#clearEventsBtn").onclick=()=>{if(confirm("Clear the local event ledger? Alerts will remain.")){state.events=[];render();toast("Local event ledger cleared")}};
+$("#saveGuardrails").onclick=()=>{state.confirm=$("#confirmAction").checked;state.record=$("#recordActions").checked;save();toast("Guardrails saved")};
+$("#confirmAction").checked=state.confirm;$("#recordActions").checked=state.record;
+$("#saveSettings").onclick=()=>{state.sensitivity=$("#sensitivity").value;state.workspace=$("#workspaceName").value.trim()||defaults.workspace;save();toast("Preferences saved")};
+$("#resetDemo").onclick=()=>{if(confirm("Reset Sentinel demo data, alerts, events, and preferences in this browser?")){state=structuredClone(defaults);$("#sensitivity").value="balanced";$("#workspaceName").value=defaults.workspace;render();toast("Demo environment reset")}};
+$("#sensitivity").value=state.sensitivity;$("#workspaceName").value=state.workspace;
+render();
+</script>
+</body></html>
